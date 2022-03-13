@@ -1,0 +1,124 @@
+Q1:
+import java.util.*;
+import java.util.stream.*;
+//define class Employee
+class Employee{
+	private String name;
+	private String deptt;
+	private double salary;
+	public Employee(String n, String d, double s) {
+		name = n;
+		deptt = d;
+		salary = s;
+	}
+	public String getDept() {
+		return deptt;
+	}
+	public double getSalary() {
+		return salary;
+	}
+	
+	public String toString() {
+		return name + " :" + deptt + " :" + (int)salary;
+	}
+}
+public class FClass{
+    //define method query
+	public static Stream<Employee> query(ArrayList<Employee> e, String dd, double ss ){
+		int len = e.size();
+		Employee[] arr = new Employee[len];
+		int count = 0;
+		for(Employee emp: e) {
+			if(emp.getDept().equals(dd)) {
+				if(emp.getSalary() >= ss ) {
+					arr[count] = emp;
+					count += 1;
+				}
+			}
+		}
+		Employee[] arr2 = Arrays.copyOfRange(arr, 0, count);
+		Stream<Employee> str = Stream.of(arr2);
+		return str;
+	}
+
+    
+ public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        var eList = new ArrayList<Employee>();
+        eList.add(new Employee("Jack", "HR", 30000));
+        eList.add(new Employee("Aria", "HR", 40000));
+        eList.add(new Employee("Nora", "IT", 50000));
+        eList.add(new Employee("Bella", "IT", 60000));
+        eList.add(new Employee("Jacob", "IT", 70000));
+        eList.add(new Employee("James", "HR", 80000));
+        String d = sc.next();       //read department
+        double s = sc.nextInt();    //read salary
+		
+        var st = query(eList, d, s);
+        st.forEach(n -> System.out.println(n + " "));
+    }
+}
+---------------------------------------------------------------------------
+Q2:
+import java.util.*;
+//Define classes Items, Customer
+class Items implements Cloneable{
+	public String[] item;
+	//public String iName;
+	public Items(String[] s) {
+		item = s;
+		//iName = n;
+	}
+	public String[] getItems() {
+		return item;
+	}
+	public Items clone() {
+		String[] ss = Arrays.copyOf(getItems(), getItems().length);
+		return new Items(ss);
+	}
+	public String toString() {
+		String ans = "";
+		for(String xx: item) {
+			ans = ans + " " + xx;
+		}
+		return ans;
+	}
+	
+}
+class Customer implements Cloneable{
+	private String cName;
+	private Items itm;
+	public Customer(String gg, Items i1) {
+		cName = gg;
+		itm = i1;
+	}
+	public Items getItems() {
+		return itm;
+	}
+	public void setName(String s) {
+		cName = s;
+	}
+	public Customer clone() {
+		Items ii = itm.clone();
+		return new Customer(cName, ii);
+	}
+	public String toString() {
+		return cName + itm.toString() + " ";
+	}
+}
+public class Order {
+  public static void main(String[] args) throws CloneNotSupportedException{
+    Scanner sc = new Scanner(System.in);
+    int n = sc.nextInt(); // number of items
+    String[] itm = new String[n];
+    for(int i = 0; i < n; i++){
+      itm[i] = sc.next(); // list of items
+    } 
+    var c1 = new Customer("naresh", new Items(itm));
+    Customer c2 = c1.clone();   
+    c2.getItems().item[0] = sc.next();   //Update first item of c2
+    c2.setName("suresh"); //Update name of c2
+    System.out.println(c1);
+    System.out.println(c2);
+  }
+}   
